@@ -3,7 +3,7 @@ from projectile import Projectile
 
 class Player:
     speed=0.1
-    is_shooting = False
+    shooting_cooldown = False
     is_moving = False
 
     def __init__(self, color, position_x, position_y, direction):
@@ -52,11 +52,15 @@ class Player:
             'position_y': self.position_y,
         }
 
+    def check_cooldown(self):
+        if self.shooting_cooldown > 0:
+            self.shooting_cooldown -= time.dt
+
     def shoot(self):
         if held_keys['space']:
-            self.is_shooting = True
-            if self.is_shooting == True:
+            if self.shooting_cooldown <= 0:
                 projectile = Projectile(color=color.red, position_x=self.entity.x, position_y=self.entity.y, direction=self.direction)
-                self.is_shooting = False
 
-            return projectile
+                self.shooting_cooldown = 1
+
+                return projectile

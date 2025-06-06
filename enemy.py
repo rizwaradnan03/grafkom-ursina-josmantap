@@ -2,7 +2,7 @@ from ursina import *
 from projectile import Projectile
 
 class Enemy:
-    speed=0.05
+    speed=0.01
     is_shooting = False
     is_moving = False
 
@@ -21,8 +21,6 @@ class Enemy:
         self.health = 100
     
     def movement(self, player_position_x, player_position_y):
-        print("Posisi Y Player : ", player_position_y)
-
         if player_position_x >= self.position_x:
             self.is_moving = True
             self.position_x += self.speed
@@ -41,11 +39,11 @@ class Enemy:
             self.entity.y = self.position_y
             self.entity.x = self.position_x
 
-    def shoot(self):
-        if held_keys['space']:
-            self.is_shooting = True
-            if self.is_shooting == True:
-                projectile = Projectile(color=color.red, position_x=self.entity.x, position_y=self.entity.y, direction=self.direction)
-                self.is_shooting = False
+    def decrement_health(self):
+        self.health -= 100
+        # self.health -= 10
 
-            return projectile
+        if self.health == 0:
+            return True
+    
+        return False
