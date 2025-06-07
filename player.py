@@ -59,7 +59,7 @@ class Player:
     def shoot(self):
         if held_keys['space']:
             if self.shooting_cooldown <= 0:
-                projectile = Projectile(color=color.red, position_x=self.entity.x, position_y=self.entity.y, direction=self.direction)
+                projectile = Projectile(color=color.black, position_x=self.entity.x, position_y=self.entity.y, direction=self.direction)
 
                 self.shooting_cooldown = 1
 

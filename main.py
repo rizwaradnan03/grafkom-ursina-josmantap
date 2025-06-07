@@ -42,14 +42,14 @@ def update():
     if len(existing_enemy) > 0:
         for x in existing_enemy:
             x.movement(player_position_x=player_position['position_x'], player_position_y=player_position['position_y'])
-
+            x.check_cooldown()
 
     if len(existing_projectile) > 0:
         for x in existing_projectile:
             x.move()
             
             for p in existing_enemy:
-                if x.entity.intersects(p.entity).hit:
+                if p.entity.intersects(x.entity).hit:
                     check_is_dead = p.decrement_health()
                     
                     if check_is_dead['is_dead'] == True:

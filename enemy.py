@@ -7,6 +7,7 @@ enemy_type = ['prajurit', 'kesatria', 'pahlawan']
 class Enemy:
     speed=0.01
     is_moving = False
+    damage_cooldown = False
 
     def __init__(self, id):
         enemy_color = color.green
@@ -66,16 +67,23 @@ class Enemy:
             self.entity.y = self.position_y
             self.entity.x = self.position_x
 
-    def decrement_health(self):
-        self.health = self.health - 5
+    def check_cooldown(self):
+        if self.damage_cooldown > 0:
+            self.damage_cooldown -= time.dt
 
-        if self.health <= 0:
-            return {
-                'is_dead': True,
-                'id': self.id
-            }
-        
+    def decrement_health(self):
+        if self.damage_cooldown <= 0:
+            self.damage_cooldown = 1
+
+            self.health = self.health - 23
+
+            if self.health <= 0:
+                return {
+                    'is_dead': True,
+                    'id': self.id
+                }
+            
         return {
-                'is_dead': False,
-                'id': self.id
-            }
+            'is_dead': False,
+            'id': self.id
+        }

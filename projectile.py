@@ -12,7 +12,7 @@ class Projectile:
             model='quad',
             color=color,
             position=(position_x, position_y),
-            scale=0.5,
+            scale=0.2,
             collider='box'
         )
 
