@@ -11,7 +11,7 @@ camera.fov = 10
 
 player = Player(color=color.azure, position_x=0, position_y=0, direction="right")
 gun = Gun(direction=player.direction, position_x=player.position_x, position_y=player.position_y, type="pistol")
-health_bar = Text(text=f'Health: {player.health}', position=(-0.85, 0.45), scale=2, origin=(0, 0), background=True)
+health_bar = Text(text=f'Health: {player.health}', position=(-0.25, 0.45), scale=2, origin=(0, 0), background=True)
 
 damage_cooldown = 0
 spawn_cooldown = 0
@@ -36,8 +36,6 @@ def update():
     
     gun.position(position_x=player_position['position_x'], position_y=player_position['position_y'], direction=player_position['direction'])
 
-    # print("Shooting Projectile : ", shoot_projectile)
-
     if shoot_projectile:
         existing_projectile.append(shoot_projectile)
 
@@ -58,8 +56,6 @@ def update():
                         destroy(p.entity)
                         existing_enemy.remove(p)
                         break
-
-    print("Existing Enemy : ", existing_enemy)
 
     if len(existing_enemy) > 0:
         if damage_cooldown > 0:

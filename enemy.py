@@ -8,12 +8,12 @@ class Enemy:
     speed=0.01
     is_moving = False
     damage_cooldown = False
-
+    
+    enemy_color = color.green
+    enemy_scale = 0.5
+    enemy_health = 45
+    
     def __init__(self, id):
-        enemy_color = color.green
-        enemy_scale = 0.5
-        enemy_health = 45
-
         random_x = random.randint(-10, 10)
         random_y = random.randint(-10, 10)
 
