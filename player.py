@@ -50,17 +50,19 @@ class Player:
         return {
             'position_x': self.position_x,
             'position_y': self.position_y,
+            'direction': self.direction
         }
 
     def check_cooldown(self):
         if self.shooting_cooldown > 0:
             self.shooting_cooldown -= time.dt
 
-    def shoot(self):
+    def shoot(self, gun):
         if held_keys['space']:
             if self.shooting_cooldown <= 0:
-                projectile = Projectile(color=color.black, position_x=self.entity.x, position_y=self.entity.y, direction=self.direction)
-
                 self.shooting_cooldown = 1
-
-                return projectile
+                gun = gun.fire(player=self)
+                
+                print("Tembakan : ", gun)
+                
+                return gun

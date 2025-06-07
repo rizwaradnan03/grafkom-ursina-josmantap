@@ -3,13 +3,16 @@ from ursina import *
 class Projectile:
     speed=0.2
 
-    def __init__(self, color, position_x, position_y, direction):
+    def __init__(self, color, position_x, position_y, direction, damage, model, speed):
+        self.speed = speed
+        
         self.color = color
         self.position_x = position_x
         self.position_y = position_y
         self.direction = direction
+        self.damage = damage
         self.entity = Entity(
-            model='quad',
+            model=model,
             color=color,
             position=(position_x, position_y),
             scale=0.2,

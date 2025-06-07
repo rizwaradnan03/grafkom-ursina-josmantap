@@ -2,6 +2,7 @@ import time
 from ursina import *
 from player import Player
 from enemy import Enemy
+from gun import Gun
 
 app = Ursina()
 
@@ -9,8 +10,7 @@ camera.orthographic = True
 camera.fov = 10
 
 player = Player(color=color.azure, position_x=0, position_y=0, direction="right")
-
-player_direction = "right"
+gun = Gun(direction=player.direction, position_x=player.position_x, position_y=player.position_y, type="pistol")
 health_bar = Text(text=f'Health: {player.health}', position=(-0.85, 0.45), scale=2, origin=(0, 0), background=True)
 
 damage_cooldown = 0
@@ -18,7 +18,6 @@ spawn_cooldown = 0
 
 existing_projectile = []
 existing_enemy = []
-
 
 def spawn_enemy():
     invoke(spawn_enemy, delay=5)
@@ -29,15 +28,18 @@ def spawn_enemy():
 spawn_enemy()
 
 def update():
-    global player, damage_cooldown, player_direction
+    global player, gun, damage_cooldown
 
     player_position = player.movement()
-    shoot_projectile = player.shoot()
+    shoot_projectile = player.shoot(gun=gun)
     player.check_cooldown()
+    
+    gun.position(position_x=player_position['position_x'], position_y=player_position['position_y'], direction=player_position['direction'])
+
+    # print("Shooting Projectile : ", shoot_projectile)
 
     if shoot_projectile:
         existing_projectile.append(shoot_projectile)
-
 
     if len(existing_enemy) > 0:
         for x in existing_enemy:
