@@ -1,20 +1,24 @@
 from ursina import *
 from projectile import Projectile
+import random
 
 class Enemy:
     speed=0.01
     is_shooting = False
     is_moving = False
 
-    def __init__(self, color, position_x, position_y, direction):
-        self.color = color
-        self.position_x = position_x
-        self.position_y = position_y
-        self.direction = direction
+    def __init__(self, id):
+        random_x = random.randint(-10, 10)
+        random_y = random.randint(-10, 10)
+
+        self.id = id
+        self.color = color.green
+        self.position_x = random_x
+        self.position_y = random_y
         self.entity = Entity(
             model='quad',
-            color=color,
-            position=(position_x, position_y),
+            color=color.green,
+            position=(random_x, random_y),
             scale=0.5,
             collider='box'
         )
@@ -41,9 +45,14 @@ class Enemy:
 
     def decrement_health(self):
         self.health -= 100
-        # self.health -= 10
 
         if self.health == 0:
-            return True
-    
-        return False
+            return {
+                'is_dead': True,
+                'id': self.id
+            }
+        
+        return {
+                'is_dead': False,
+                'id': self.id
+            }

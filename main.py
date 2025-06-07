@@ -1,5 +1,5 @@
+import time
 from ursina import *
-from projectile import Projectile
 from player import Player
 from enemy import Enemy
 
@@ -19,6 +19,14 @@ spawn_cooldown = 0
 existing_projectile = []
 existing_enemy = []
 
+def spawn_enemy():
+    invoke(spawn_enemy, delay=5)
+    enemy = Enemy(id=len(existing_enemy))
+
+    existing_enemy.append(enemy)
+
+spawn_enemy()
+
 def update():
     global player, damage_cooldown, player_direction
 
@@ -29,8 +37,6 @@ def update():
     if shoot_projectile:
         existing_projectile.append(shoot_projectile)
 
-    enemy = Enemy(color=color.yellow, position_x=2, position_y=1, direction="right")
-    existing_enemy.append(enemy)
 
     if len(existing_enemy) > 0:
         for x in existing_enemy:
@@ -40,10 +46,18 @@ def update():
     if len(existing_projectile) > 0:
         for x in existing_projectile:
             x.move()
+            
+            for p in existing_enemy:
+                if x.entity.intersects(p.entity).hit:
+                    check_is_dead = p.decrement_health()
+                    
+                    if check_is_dead['is_dead'] == True:
+                        destroy(p.entity)
+                        existing_enemy.remove(p)
+                        break
 
-            if x.entity.intersects(enemy.entity).hit:
-                check_is_dead = enemy.decrement_health()
-                
+    print("Existing Enemy : ", existing_enemy)
+
     if len(existing_enemy) > 0:
         if damage_cooldown > 0:
             damage_cooldown -= time.dt
@@ -53,7 +67,6 @@ def update():
                 player.health -= 10
                 damage_cooldown = 1
                 health_bar.text = f'Health: {player.health}'
-                print("Player hit! Health:", player.health)
 
 
 app.run()
