@@ -20,6 +20,8 @@ class Projectile:
         )
 
     def move(self):
+        is_deleted = False
+
         if self.direction == "up":
             self.position_y += self.speed
         elif self.direction == "down":
@@ -31,3 +33,10 @@ class Projectile:
         
         self.entity.x = self.position_x
         self.entity.y = self.position_y
+
+        if self.position_x >= 10 or self.position_y >= 10:
+            is_deleted = True
+
+        return {
+            'is_deleted': is_deleted
+        }

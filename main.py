@@ -52,7 +52,7 @@ def update():
     
     gun.position(position_x=player_position['position_x'], position_y=player_position['position_y'], direction=player_position['direction'])
 
-    print("Damage Weapon : ", gun.damage_projectile)
+    print("Existing Projectile : ", existing_projectile)
 
     if shoot_projectile:
         existing_projectile.append(shoot_projectile)
@@ -65,7 +65,7 @@ def update():
 
     if len(existing_projectile) > 0:
         for x in existing_projectile:
-            x.move()
+            projectile_move = x.move()
             
             for p in existing_enemy:
                 if p.entity.intersects(x.entity).hit:
@@ -75,6 +75,10 @@ def update():
                         destroy(p.entity)
                         existing_enemy.remove(p)
                         break
+            
+            if projectile_move['is_deleted'] == True:
+                destroy(x.entity)
+                existing_projectile.remove(x)
 
     if len(dropped_gun) > 0:
         for x in dropped_gun:
