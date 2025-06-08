@@ -5,6 +5,7 @@ class Player:
     speed=0.1
     shooting_cooldown = False
     is_moving = False
+    health = 100
 
     def __init__(self, color, position_x, position_y, direction):
         self.color = color
@@ -18,7 +19,6 @@ class Player:
             scale=0.5,
             collider='box'
         )
-        self.health = 100
     
     def movement(self):
         if held_keys['a']:

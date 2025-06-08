@@ -13,7 +13,6 @@ player = Player(color=color.azure, position_x=0, position_y=0, direction="right"
 gun = Gun(direction=player.direction, position_x=player.position_x, position_y=player.position_y, type="pistol")
 health_bar = Text(text=f'Health: {player.health}', position=(-0.25, 0.45), scale=2, origin=(0, 0), background=True)
 
-damage_cooldown = 0
 spawn_cooldown = 0
 
 existing_projectile = []
@@ -28,7 +27,7 @@ def spawn_enemy():
 spawn_enemy()
 
 def update():
-    global player, gun, damage_cooldown
+    global player, gun
 
     player_position = player.movement()
     shoot_projectile = player.shoot(gun=gun)
@@ -43,6 +42,7 @@ def update():
         for x in existing_enemy:
             x.movement(player_position_x=player_position['position_x'], player_position_y=player_position['position_y'])
             x.check_cooldown()
+            x.check_attack_cooldown()
 
     if len(existing_projectile) > 0:
         for x in existing_projectile:
@@ -58,13 +58,13 @@ def update():
                         break
 
     if len(existing_enemy) > 0:
-        if damage_cooldown > 0:
-            damage_cooldown -= time.dt
-
         for x in existing_enemy:
-            if player.entity.intersects(x.entity).hit and damage_cooldown <= 0:
-                player.health -= 10
-                damage_cooldown = 1
+            if player.entity.intersects(x.entity).hit:
+                attack = x.attack(player)
+
+                if attack['is_dead'] == True:
+                    application.quit()
+
                 health_bar.text = f'Health: {player.health}'
 
 

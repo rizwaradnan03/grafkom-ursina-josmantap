@@ -1,5 +1,4 @@
 from ursina import *
-from projectile import Projectile
 import random
 
 enemy_type = ['prajurit', 'kesatria', 'pahlawan']
@@ -7,11 +6,13 @@ enemy_type = ['prajurit', 'kesatria', 'pahlawan']
 class Enemy:
     speed=0.01
     is_moving = False
-    damage_cooldown = False
+    damage_cooldown = 0
+    attack_cooldown = 0
     
     enemy_color = color.green
     enemy_scale = 0.5
     enemy_health = 45
+    enemy_damage = 8
     
     def __init__(self, id):
         random_x = random.randint(-10, 10)
@@ -21,30 +22,33 @@ class Enemy:
         selected_type = enemy_type[random_type]
 
         if selected_type == "prajurit":
-            enemy_color = color.green
-            enemy_health = 45
-            enemy_scale = 0.5
+            self.enemy_color = color.green
+            self.enemy_health = 45
+            self.enemy_scale = 0.5
+            self.enemy_damage = 8
 
         elif selected_type == "kesatria":
-            enemy_color = color.cyan
-            enemy_health = 79
-            enemy_scale = 0.8
+            self.enemy_color = color.cyan
+            self.enemy_health = 79
+            self.enemy_scale = 0.8
+            self.enemy_damage = 12
 
         elif selected_type == "pahlawan":
-            enemy_color = color.red
-            enemy_health = 123
-            enemy_scale = 1.7
+            self.enemy_color = color.red
+            self.enemy_health = 123
+            self.enemy_scale = 1.7
+            self.enemy_damage = 23
 
         self.id = id
-        self.color = enemy_color
-        self.health = enemy_health
+        self.color = self.enemy_color
+        self.health = self.enemy_health
         self.position_x = random_x
         self.position_y = random_y
         self.entity = Entity(
             model='quad',
-            color=enemy_color,
+            color=self.enemy_color,
             position=(random_x, random_y),
-            scale=enemy_scale,
+            scale=self.enemy_scale,
             collider='box'
         )
     
@@ -71,11 +75,31 @@ class Enemy:
         if self.damage_cooldown > 0:
             self.damage_cooldown -= time.dt
 
+    def check_attack_cooldown(self):
+        if self.attack_cooldown > 0:
+            self.attack_cooldown -= time.dt
+
+    def attack(self, player):
+        is_dead = False
+
+        if self.attack_cooldown <= 0: 
+            player.health -= self.enemy_damage
+
+            if player.health <= 0:
+                is_dead = True
+            
+            self.attack_cooldown = 1
+
+        return {
+            'health': player.health,
+            'is_dead': is_dead
+        }
+
     def decrement_health(self):
         if self.damage_cooldown <= 0:
             self.damage_cooldown = 1
 
-            self.health = self.health - 23
+            self.health = self.health - self.enemy_damage
 
             if self.health <= 0:
                 return {
