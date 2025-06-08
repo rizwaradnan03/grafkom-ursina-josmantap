@@ -95,11 +95,11 @@ class Enemy:
             'is_dead': is_dead
         }
 
-    def decrement_health(self):
+    def decrement_health(self, projectile):
         if self.damage_cooldown <= 0:
             self.damage_cooldown = 1
 
-            self.health = self.health - self.enemy_damage
+            self.health = self.health - projectile.damage
 
             if self.health <= 0:
                 return {

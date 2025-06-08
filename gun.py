@@ -29,9 +29,9 @@ class Gun:
             self.color_gun = color.blue
             self.scale = 0.3
             self.color_projectile = color.red
-            self.damage_projectile = 85
+            self.damage_projectile = 64
             self.model_projectile = 'cube'
-            self.speed_projectile = 0.3
+            self.speed_projectile = 0.5
 
         self.type = type
         

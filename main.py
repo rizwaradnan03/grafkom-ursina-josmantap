@@ -3,6 +3,7 @@ from ursina import *
 from player import Player
 from enemy import Enemy
 from gun import Gun
+import random
 
 app = Ursina()
 
@@ -18,6 +19,8 @@ spawn_cooldown = 0
 existing_projectile = []
 existing_enemy = []
 
+dropped_gun = []
+
 def spawn_enemy():
     invoke(spawn_enemy, delay=5)
     enemy = Enemy(id=len(existing_enemy))
@@ -25,6 +28,20 @@ def spawn_enemy():
     existing_enemy.append(enemy)
 
 spawn_enemy()
+
+def spawn_dropped_gun():
+    if len(dropped_gun) <= 3:
+        invoke(spawn_dropped_gun, delay=8)
+        random_x = random.randint(0, 5)
+        random_y = random.randint(0, 5)
+
+        gun_type = ["pistol", "crossbow", "sniper"]
+
+        random_gun = random.randint(0, 2)
+
+        dropped_gun.append(Gun(position_x=random_x, position_y=random_y, direction=player.direction, type=gun_type[random_gun]))
+
+spawn_dropped_gun()
 
 def update():
     global player, gun
@@ -34,6 +51,8 @@ def update():
     player.check_cooldown()
     
     gun.position(position_x=player_position['position_x'], position_y=player_position['position_y'], direction=player_position['direction'])
+
+    print("Damage Weapon : ", gun.damage_projectile)
 
     if shoot_projectile:
         existing_projectile.append(shoot_projectile)
@@ -50,12 +69,21 @@ def update():
             
             for p in existing_enemy:
                 if p.entity.intersects(x.entity).hit:
-                    check_is_dead = p.decrement_health()
+                    check_is_dead = p.decrement_health(x)
                     
                     if check_is_dead['is_dead'] == True:
                         destroy(p.entity)
                         existing_enemy.remove(p)
                         break
+
+    if len(dropped_gun) > 0:
+        for x in dropped_gun:
+            if player.entity.intersects(x.entity).hit:
+                destroy(gun.entity)
+                dropped_gun.remove(x)
+
+                gun = x
+                break
 
     if len(existing_enemy) > 0:
         for x in existing_enemy:

@@ -21,13 +21,13 @@ class Projectile:
 
     def move(self):
         if self.direction == "up":
-            self.position_y += 0.2
+            self.position_y += self.speed
         elif self.direction == "down":
-            self.position_y -= 0.2
+            self.position_y -= self.speed
         elif self.direction == "right":
-            self.position_x += 0.2
+            self.position_x += self.speed
         elif self.direction == "left":
-            self.position_x -= 0.2
+            self.position_x -= self.speed
         
         self.entity.x = self.position_x
         self.entity.y = self.position_y
