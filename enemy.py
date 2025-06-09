@@ -7,6 +7,7 @@ class Enemy:
     speed = 0.01
     is_moving = False
     attack_cooldown = 0
+    damage_cooldown = 0
     
     enemy_color = color.green
     enemy_scale = 0.5
@@ -107,14 +108,21 @@ class Enemy:
             'is_dead': is_dead
         }
 
-    def decrement_health(self, projectile):
-        self.health = self.health - projectile.damage
+    def check_damage_cooldown(self):
+        if self.damage_cooldown > 0:
+            self.damage_cooldown -= time.dt
 
-        if self.health <= 0:
-            return {
-                'is_dead': True,
-                'id': self.id
-            }
+    def decrement_health(self, projectile):
+        if self.damage_cooldown <= 0:
+            self.health = self.health - projectile.damage
+
+            self.damage_cooldown = 1
+            
+            if self.health <= 0:
+                return {
+                    'is_dead': True,
+                    'id': self.id
+                }
             
         return {
             'is_dead': False,

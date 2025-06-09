@@ -62,7 +62,7 @@ def update():
     if len(existing_enemy) > 0:
         for x in existing_enemy:
             x.movement(player_position_x=player_position['position_x'], player_position_y=player_position['position_y'])
-            # x.check_cooldown()
+            x.check_damage_cooldown()
             x.check_attack_cooldown()
 
     if len(existing_projectile) > 0:
@@ -77,10 +77,6 @@ def update():
                         destroy(p.entity)
                         existing_enemy.remove(p)
                         break
-            
-            # if projectile_move['is_deleted'] == True:
-            #     destroy(x.entity)
-            #     existing_projectile.remove(x)
 
     if len(dropped_gun) > 0:
         for x in dropped_gun:
