@@ -62,5 +62,7 @@ class Player:
             if self.shooting_cooldown <= 0:
                 self.shooting_cooldown = 1
                 gun = gun.fire(player=self)
-                                
+                
+                print("gun value : ", gun)
+
                 return gun

@@ -35,9 +35,10 @@ def spawn_dropped_gun():
         random_x = random.randint(0, 5)
         random_y = random.randint(0, 5)
 
-        gun_type = ["pistol", "crossbow", "sniper"]
+        gun_type = ["pistol", "crossbow", "sniper", "m4"]
 
-        random_gun = random.randint(0, 2)
+        # random_gun = random.randint(0, len(gun_type) - 1)
+        random_gun = 3
 
         dropped_gun.append(Gun(position_x=random_x, position_y=random_y, direction=player.direction, type=gun_type[random_gun]))
 
@@ -47,20 +48,19 @@ def update():
     global player, gun
 
     player_position = player.movement()
-    shoot_projectile = player.shoot(gun=gun)
+    shoot_projectiles = player.shoot(gun=gun)
     player.check_cooldown()
     
     gun.position(position_x=player_position['position_x'], position_y=player_position['position_y'], direction=player_position['direction'])
 
-    print("Existing Projectile : ", existing_projectile)
-
-    if shoot_projectile:
-        existing_projectile.append(shoot_projectile)
+    if shoot_projectiles:
+        for i in shoot_projectiles:
+            existing_projectile.append(i)
 
     if len(existing_enemy) > 0:
         for x in existing_enemy:
             x.movement(player_position_x=player_position['position_x'], player_position_y=player_position['position_y'])
-            x.check_cooldown()
+            # x.check_cooldown()
             x.check_attack_cooldown()
 
     if len(existing_projectile) > 0:
@@ -76,9 +76,9 @@ def update():
                         existing_enemy.remove(p)
                         break
             
-            if projectile_move['is_deleted'] == True:
-                destroy(x.entity)
-                existing_projectile.remove(x)
+            # if projectile_move['is_deleted'] == True:
+            #     destroy(x.entity)
+            #     existing_projectile.remove(x)
 
     if len(dropped_gun) > 0:
         for x in dropped_gun:

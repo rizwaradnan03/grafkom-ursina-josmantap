@@ -6,6 +6,7 @@ class Gun:
     damage_projectile = 13
     model_projectile = 'cube'
     speed_projectile = 0.2
+    shoot_type = "single"
 
     def __init__(self, position_x, position_y, direction, type):
 
@@ -16,6 +17,7 @@ class Gun:
             self.damage_projectile = 13
             self.model_projectile = 'cube'
             self.speed_projectile = 0.1
+            self.shoot_type = "single"
 
         elif type == "crossbow":
             self.color_gun = color.black
@@ -24,6 +26,7 @@ class Gun:
             self.damage_projectile = 43
             self.model_projectile = 'cube'
             self.speed_projectile = 0.2
+            self.shoot_type = "single"
 
         elif type == "sniper":
             self.color_gun = color.blue
@@ -32,6 +35,16 @@ class Gun:
             self.damage_projectile = 64
             self.model_projectile = 'cube'
             self.speed_projectile = 0.5
+            self.shoot_type = "single"
+
+        elif type == "m4":
+            self.color_gun = color.cyan
+            self.scale = 0.2
+            self.color_projectile = color.green
+            self.damage_projectile = 30
+            self.model_projectile = 'cube'
+            self.speed_projectile = 0.3
+            self.shoot_type = "burst"
 
         self.type = type
         
@@ -62,4 +75,17 @@ class Gun:
         self.direction = direction
     
     def fire(self, player):
-        return Projectile(color=self.projectile['color'], damage=self.projectile['damage'], model=self.projectile['model'], position_x=player.position_x, position_y=player.position_y, speed=self.projectile['speed'], direction=player.direction)
+        print("Player : ", player)
+        print("Shoot Type : ", self.shoot_type)
+
+        projectiles = []
+
+        projectile = Projectile(color=self.projectile['color'], damage=self.projectile['damage'], model=self.projectile['model'], position_x=player.position_x, position_y=player.position_y, speed=self.projectile['speed'], direction=player.direction)
+
+        if self.shoot_type == "burst":
+            for i in range(3):
+                projectiles.append(projectile)
+        else:
+            projectiles.append(projectile)
+        
+        return projectiles
