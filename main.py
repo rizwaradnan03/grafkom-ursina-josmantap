@@ -37,8 +37,7 @@ def spawn_dropped_gun():
 
         gun_type = ["pistol", "crossbow", "sniper", "m4"]
 
-        # random_gun = random.randint(0, len(gun_type) - 1)
-        random_gun = 3
+        random_gun = random.randint(0, len(gun_type) - 1)
 
         dropped_gun.append(Gun(position_x=random_x, position_y=random_y, direction=player.direction, type=gun_type[random_gun]))
 
@@ -51,6 +50,9 @@ def update():
     shoot_projectiles = player.shoot(gun=gun)
     player.check_cooldown()
     
+    camera.position = (player_position['position_x'], player_position['position_y'])
+    camera.look_at(player.entity.position)
+
     gun.position(position_x=player_position['position_x'], position_y=player_position['position_y'], direction=player_position['direction'])
 
     if shoot_projectiles:
