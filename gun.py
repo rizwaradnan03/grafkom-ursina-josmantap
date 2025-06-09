@@ -4,7 +4,7 @@ from projectile import Projectile
 class Gun:
     color_projectile = color.green
     damage_projectile = 13
-    model_projectile = 'cube'
+    model_projectile = 'circle'
     speed_projectile = 0.2
     shoot_type = "single"
 
@@ -15,25 +15,25 @@ class Gun:
             self.scale = 0.2
             self.color_projectile = color.yellow
             self.damage_projectile = 13
-            self.model_projectile = 'cube'
+            self.model_projectile = 'circle'
             self.speed_projectile = 0.1
             self.shoot_type = "single"
 
         elif type == "crossbow":
             self.color_gun = color.black
-            self.scale = 0.4
+            self.scale = 0.2
             self.color_projectile = color.black
             self.damage_projectile = 43
-            self.model_projectile = 'cube'
+            self.model_projectile = 'circle'
             self.speed_projectile = 0.2
             self.shoot_type = "single"
 
         elif type == "sniper":
             self.color_gun = color.blue
-            self.scale = 0.3
+            self.scale = 0.2
             self.color_projectile = color.red
             self.damage_projectile = 64
-            self.model_projectile = 'cube'
+            self.model_projectile = 'circle'
             self.speed_projectile = 0.5
             self.shoot_type = "single"
 
@@ -42,7 +42,7 @@ class Gun:
             self.scale = 0.2
             self.color_projectile = color.green
             self.damage_projectile = 30
-            self.model_projectile = 'cube'
+            self.model_projectile = 'circle'
             self.speed_projectile = 0.3
             self.shoot_type = "burst"
 
@@ -62,7 +62,7 @@ class Gun:
         self.position_y = position_y
         self.direction = direction
         self.entity = Entity(
-            model='quad',
+            model='circle',
             color=self.color_gun,
             position=(position_x, position_y),
             scale=self.scale,

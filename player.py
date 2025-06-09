@@ -14,10 +14,11 @@ class Player:
         self.direction = direction
         self.entity = Entity(
             model='quad',
-            color=color,
+            texture='player.png',
             position=(position_x, position_y),
-            scale=0.5,
-            collider='box'
+            scale=(1.5, 1.5),
+            collider='box',
+            double_sided=True  # Ensure both sides render with transparency
         )
     
     def movement(self):
